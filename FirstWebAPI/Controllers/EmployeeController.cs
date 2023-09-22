@@ -44,24 +44,44 @@ namespace FirstWebAPI.Controllers
             return employees;
         }
         [HttpPost]
-        public Employee EmployeeDetails(int id)
+        public  Employee EmployeeDetails(int id)
         {
             Employee employees = _repositoryEmployee.GetEmployeeId(id);
             return employees;
         }
-        [HttpPost("/addnewemployee")]
-        public int GetEmployee([FromBody] Employee employee)
+        [HttpPost("/addEmp")]
+        public IActionResult AddEmployee([FromBody] EmpViewModel employeeRequest)
         {
+            if (employeeRequest == null)
+            {
+                return BadRequest("Employee data is missing in the request.");
+            }
+            Employee newEmployee = new Employee
+            {
+                FirstName = employeeRequest.FirstName,
+                LastName = employeeRequest.LastName,
+                BirthDate = employeeRequest.BirthDate,
+                HireDate = employeeRequest.HireDate,
+                Title = employeeRequest.Title,
+                City = employeeRequest.City,
+                ReportsTo = employeeRequest.ReportsTo > 0 ? employeeRequest.ReportsTo : null
+            };
 
-           _repositoryEmployee.AddEmployee(employee);
-            return 1;
-           
+
+
+            Employee addedEmployee = _repositoryEmployee.AddEmployee(newEmployee);
+
+
+
+            // Return a Created response with the newly created employee
+            return CreatedAtAction(nameof(EmployeeDetails), new { id = addedEmployee.EmployeeId }, addedEmployee);
+
         }
         [HttpPut]
-        public Employee Put(int id,[FromBody] Employee updatedEmployeeData)
+        public int Put(int id,[FromBody] Employee updatedEmployeeData)
         {
             updatedEmployeeData.EmployeeId = id;
-            Employee savedEmployee = _repositoryEmployee.UpdateEmployee(updatedEmployeeData);
+            int savedEmployee =_repositoryEmployee.UpdateEmployee(updatedEmployeeData);
             return savedEmployee;
 
         }
