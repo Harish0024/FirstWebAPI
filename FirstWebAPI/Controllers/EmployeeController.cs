@@ -49,16 +49,30 @@ namespace FirstWebAPI.Controllers
             Employee employees = _repositoryEmployee.GetEmployeeId(id);
             return employees;
         }
-        [HttpPut]
-        public void Put(int id, Employee updatedEmployeeData)
+        [HttpPost("/addnewemployee")]
+        public int GetEmployee([FromBody] Employee employee)
         {
-            Employee employee = _repositoryEmployee.UpdateCustomer(id, updatedEmployeeData);
+
+           _repositoryEmployee.AddEmployee(employee);
+            return 1;
+           
+        }
+        [HttpPut]
+        public Employee Put(int id,[FromBody] Employee updatedEmployeeData)
+        {
+            updatedEmployeeData.EmployeeId = id;
+            Employee savedEmployee = _repositoryEmployee.UpdateEmployee(updatedEmployeeData);
+            return savedEmployee;
 
         }
         [HttpDelete]
-        public void Delete(int id)
+        public int DeleteEmployee(int id)
         {
-            Employee employee=_repositoryEmployee.DeleteEmployee(id);
+
+           
+           _repositoryEmployee.DeleteEmployee(id);
+            return 1;
         }
+       
     }
 }

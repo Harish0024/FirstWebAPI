@@ -20,31 +20,30 @@ namespace FirstWebAPI.Models
             Employee employee = _context.Employees.Find(id);
             return employee;
         }
-        public Employee UpdateCustomer(int id, Employee updatedEmployeeData)
+
+        public void AddEmployee(Employee employee)
         {
-            Employee employee = _context.Employees.Find(id);
-            if (employee == null)
-            {
-                throw new ArgumentException("Customer not found.");
-            }
-            _context.Employees.Update(employee);
+            _context.Employees.Add(employee);
+            _context.SaveChanges();
+        }
+        public Employee UpdateEmployee( Employee updatedEmployeeData)
+        { 
+        
+            _context.Employees.Update(updatedEmployeeData);
 
             // Save changes to the database
             _context.SaveChanges();
 
-            return employee;
+            return updatedEmployeeData;
 
         }
-        public Employee DeleteEmployee(int id)
+        public void DeleteEmployee(int id)
         {
-            Employee employee = _context.Employees.Find(id);
-            if (employee == null)
-            {
-                throw new ArgumentException("Customer not found.");
-            }
+            var employee = _context.Employees.Find(id);
+
             _context.Employees.Remove(employee);
             _context.SaveChanges();
-            return employee;
+            
         }
     }
 }
