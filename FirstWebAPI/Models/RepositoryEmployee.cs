@@ -69,11 +69,7 @@ namespace FirstWebAPI.Models
                 es = _context.Entry(empDelete).State;
                 Console.WriteLine($"Entitystate after save change:{es.GetDisplayName()}");
             }
-            return result;
-
-            
-            
-            
+            return result;                   
         }
     }
 }

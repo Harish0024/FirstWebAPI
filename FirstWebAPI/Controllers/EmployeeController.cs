@@ -77,22 +77,32 @@ namespace FirstWebAPI.Controllers
             return CreatedAtAction(nameof(EmployeeDetails), new { id = addedEmployee.EmployeeId }, addedEmployee);
 
         }
-        [HttpPut]
-        public int Put(int id,[FromBody] Employee updatedEmployeeData)
+        [HttpPut("/EditEmployee")]
+        public void EditEmployee([FromBody] EmpViewModel updatedEmployee)
         {
-            updatedEmployeeData.EmployeeId = id;
-            int savedEmployee =_repositoryEmployee.UpdateEmployee(updatedEmployeeData);
-            return savedEmployee;
+            Employee employee = new Employee()
+            {
+                EmployeeId = updatedEmployee.EmpId,
+                FirstName = updatedEmployee.FirstName,
+                LastName = updatedEmployee.LastName,
+                BirthDate = updatedEmployee.BirthDate,
+                HireDate = updatedEmployee.HireDate,
+                City = updatedEmployee.City,
+                ReportsTo = updatedEmployee.ReportsTo,
+                Title = updatedEmployee.Title
+            };
 
+
+
+            _repositoryEmployee.UpdateEmployee(employee);
         }
-        [HttpDelete]
+
+        [HttpDelete("/DeleteEmployee")]
         public int DeleteEmployee(int id)
         {
-
-           
-           _repositoryEmployee.DeleteEmployee(id);
+            _repositoryEmployee.DeleteEmployee(id);
             return 1;
         }
-       
+
     }
 }
